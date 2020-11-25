@@ -89,7 +89,7 @@ class LHV2:
 
     def writeCharacteristic(self, uuid, val):
         charc = self.getCharacteristic(uuid)
-        charc.write(val)
+        charc.write(val, withResponse=True)
         if self.verbose >= INFO:
             print(f'Writing {val.hex()} to {charc.uuid.getCommonName()}')
 
