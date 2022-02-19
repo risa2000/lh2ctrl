@@ -11,7 +11,7 @@ The implemented solution [lh2ctrl.py](/pylhctrl/lh2ctrl.py) uses Python `bluepy`
 
 #### Usage
 ```
-usage: lh2ctrl.py [-h] [-g GLOBAL_TIMEOUT] [-i INTERFACE]
+usage: lh2ctrl.py [-h] [-g GLOBAL_TIMEOUT | --on | --off] [-i INTERFACE]
                   [--try_count TRY_COUNT] [--try_pause TRY_PAUSE] [-v]
                   lh_mac [lh_mac ...]
 
@@ -26,6 +26,8 @@ optional arguments:
   -g GLOBAL_TIMEOUT, --global_timeout GLOBAL_TIMEOUT
                         time (sec) how long to keep the lighthouse(s) alive
                         (0=forever) [0]
+  --on                  just switch the devices on and stop
+  --off                 just switch the devices off and stop
   -i INTERFACE, --interface INTERFACE
                         The Bluetooth interface on which to make the
                         connection to be set. On Linux, 0 means /dev/hci0, 1
