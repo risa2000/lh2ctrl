@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Valve v2 lighthouse power management over BT LE
 """
@@ -10,6 +11,7 @@ import signal
 import sys
 import time
 from functools import partial
+from enum import Enum
 
 #   globals
 #-------------------------------------------------------------------------------
@@ -31,6 +33,8 @@ POWER_OFF = b'\x00'
 TRY_COUNT       = 5
 TRY_PAUSE       = 2
 GLOBAL_TIMEOUT  = 0
+
+Mode = Enum('Mode', 'WAIT ON OFF')
 
 #   LHV2 class
 #-------------------------------------------------------------------------------
@@ -126,7 +130,8 @@ def boot(args):
                 print(f'Booting up {lhv2.getName()}')
             lhv2.powerOn()
             lhv2.disconnect()
-        wait(args.global_timeout, verb=args.verbose)
+        if args.mode is Mode.WAIT:
+            wait(args.global_timeout, verb=args.verbose)
     except KeyboardInterrupt:
         print()
         print('Keyboard interrupt caught')
@@ -157,8 +162,10 @@ def main(args):
     """Main runner."""
     signal.signal(signal.SIGTERM, partial(sigterm_hndlr, args, signal.getsignal(signal.SIGTERM)))
     signal.signal(signal.SIGHUP, partial(sigterm_hndlr, args, signal.getsignal(signal.SIGHUP)))
-    boot(args)
-    shutdown(args)
+    if args.mode is not Mode.OFF:
+        boot(args)
+    if args.mode is not Mode.ON:
+        shutdown(args)
 
 #   main
 #-------------------------------------------------------------------------------
@@ -168,7 +175,11 @@ if __name__ == '__main__':
 
     ap = ArgumentParser(description='Wakes up and runs Valve v2 lighthouse(s) using BT LE power management')
     ap.add_argument('lh_mac', type=str, nargs='+', help='MAC address(es) of the lighthouse(s) (in format aa:bb:cc:dd:ee:ff)')
-    ap.add_argument('-g', '--global_timeout', type=int, default=GLOBAL_TIMEOUT, help='time (sec) how long to keep the lighthouse(s) alive (0=forever) [%(default)s]')
+    modeGroup = ap.add_mutually_exclusive_group()
+    modeGroup.add_argument('-g', '--global_timeout', type=int, default=GLOBAL_TIMEOUT, help='time (sec) how long to keep the lighthouse(s) alive (0=forever) [%(default)s]')
+    modeGroup.add_argument('--on', action='store_const', dest='mode', const=Mode.ON, help='just switch the devices on and stop')
+    modeGroup.add_argument('--off', action='store_const', dest='mode', const=Mode.OFF, help='just switch the devices off and stop')
+    ap.set_defaults(mode=Mode.WAIT)
     ap.add_argument('-i', '--interface', type=int, default=0, help='The Bluetooth interface on which to make the connection to be set. On Linux, 0 means /dev/hci0, 1 means /dev/hci1 and so on. [%(default)s]')
     ap.add_argument('--try_count', type=int, default=TRY_COUNT, help='number of tries to set up a connection [%(default)s]')
     ap.add_argument('--try_pause', type=int, default=TRY_PAUSE, help='sleep time when reconnecting [%(default)s]')
