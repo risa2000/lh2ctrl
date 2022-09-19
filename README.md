@@ -38,3 +38,19 @@ optional arguments:
                         sleep time when reconnecting [2]
   -v, --verbose         increase verbosity of the log to stdout
   ```
+  
+#### Usage example
+NOTE: on a motherboard with an integrated Bluetooth interface, you might need to install an external antenna.
+```bash
+bluetoothctl scan on
+```
+Look for LHB-XXXXXXXX:
+```
+[NEW] Device F4:7F:AD:38:CA:A2 LHB-D20A32D4
+[NEW] Device A5:03:4A:3E:84:E3 LHB-B03C2E25
+```
+Turn on and off:
+```bash
+./lh2ctrl.py --on F4:7F:AD:38:CA:A2 A5:03:4A:3E:84:E3
+./lh2ctrl.py --off F4:7F:AD:38:CA:A2 A5:03:4A:3E:84:E3
+```
