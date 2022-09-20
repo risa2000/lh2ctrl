@@ -40,7 +40,7 @@ optional arguments:
   ```
   
 #### Usage example
-NOTE: on a motherboard with an integrated Bluetooth interface, you might need to install an external antenna.
+NOTE: on a motherboard (e.g. PC desktop) with an integrated Bluetooth interface, you might need to install an external antenna to get a good RSSI (signal strength).
 ```bash
 bluetoothctl scan on
 ```
