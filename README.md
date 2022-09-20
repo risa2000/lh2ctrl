@@ -40,7 +40,7 @@ optional arguments:
   ```
   
 #### Usage example
-NOTE: on a motherboard (e.g. PC desktop) with an integrated Bluetooth interface, you might need to install an external antenna to get a good RSSI (signal strength).
+You can use some other BT or BTLE tools (e.g. `blescan` or `bluetoothctl`) to figure out the corresponding MACs for your lighthouses (LHs):
 ```bash
 bluetoothctl scan on
 ```
@@ -54,3 +54,6 @@ Turn on and off:
 ./lh2ctrl.py --on F4:7F:AD:38:CA:A2 A5:03:4A:3E:84:E3
 ./lh2ctrl.py --off F4:7F:AD:38:CA:A2 A5:03:4A:3E:84:E3
 ```
+
+#### BT signal strength
+If you cannot find your LHs in the scan, or the scanned signal strength is low (RSSI < ~ -80 dBm), you might need to attach an additional antenna to improve your radio communication. This could happen on a PC motherboard with an integrated Bluetooth interface, or RPi in a shielded case, or in RPi model 4+ with an integrated USB 3.0, where the USB 3.0 heavy traffic can also be a source of a strong interference.
