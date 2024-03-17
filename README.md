@@ -9,15 +9,15 @@ While v1 lighthouses used a quite convoluted protocol to keep the lighthouse run
 ### Solution
 The implemented solution [lh2ctrl.py](/pylhctrl/lh2ctrl.py) uses Python `bluepy` package to access `bluez` BT LE API. The script writes to a particular characteristic to start or stop the lighthouse.
 
-#### Installing Bluepy
-Nowadays, most Linux distributions will require that you install bluepy in a Python virtual environment (“venv”) instead of globally, and that you use it when executing this tool. To setup a bluepy venv, just execute the following commands:
+#### Installing Bluepy in a Python virtual environment (`venv`)
+If your distro requires that you install and use `bluepy` in a Python virtual environment (`venv`), you can use this example about how to do it:
 
 ```bash
 python3 -m venv $HOME/.venvs/bluepy
 source $HOME/.venvs/bluepy/bin/activate
 pip install bluepy
 ```
-Then remember to activate the bluepy venv every time before using this tool:
+Then remember to activate the `bluepy` `venv` every time before using this tool:
 ```bash
 source $HOME/.venvs/bluepy/bin/activate
 ```
@@ -69,20 +69,18 @@ Turn on and off:
 ```
 Without `--on` or `--off`, the stations will stay on until you stop the script. Use `-g` to specify a timeout after which the script will stop automatically.
 
-For convenience, it might be useful to wrap this command and the venv activation in a bash script:
+You can wrap this script execution in a shell script (and if you are using `venv` add its activation as well):
 ```bash
 #!/bin/bash
 source $HOME/.venvs/bluepy/bin/activate
-$HOME/apps/lh2ctrl/pylh2ctrl/lh2ctrl.py -v $1 F4:7F:AD:38:CA:A2 A5:03:4A:3E:84:E3
+<full_path>/lh2ctrl.py -v $1 F4:7F:AD:38:CA:A2 A5:03:4A:3E:84:E3
 ```
 Save it somewhere in your `$PATH` as e.g. `vr-base-stations` and then use it as
 ```bash
 vr-base-stations --on
 ```
 #### Usage with SteamVR
-It is very convenient to start and stop the base stations automatically with SteamVR instead of doing it manually.
-
-To do this, just right click StreamVR in your Steam Library, select _Properties_ and in the _General_ tab, set the _Launch options_ to
+To start and stop the base stations automatically with SteamVR, just change the `SteamVR` binary _launch options_ to
 ```bash
 vr-base-stations --on & %command%; vr-base-stations --off
 ```
